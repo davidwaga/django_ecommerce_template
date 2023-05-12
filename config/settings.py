@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -120,8 +120,10 @@ AUTH_PASSWORD_VALIDATORS = [
 # ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 # LOGIN_REDIRECT_URL = '/'
 SITE_ID = 1
-CRISPY_TEMPLATE_PACK = 'bootstrap5'
 
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+
+CRISPY_TEMPLATE_PACK = "bootstrap5"
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
@@ -144,4 +146,45 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+#EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
+STATIC_ROOT = os.path.join(BASE_DIR, "static_root")
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+
+PAYPAL_CLIENT_ID = "env('PAYPAL_SANDBOX_CLIENT_ID')"
+PAYPAL_SECRET_KEY = "env('PAYPAL_SANDBOX_SECRET_KEY')"
+
+STRIPE_PUBLIC_KEY = "env('STRIPE_PUBLIC_KEY')"
+STRIPE_SECRET_KEY = "env('STRIPE_SECRET_KEY')"
+STRIPE_WEBHOOK_SECRET = "env('STRIPE_WEBHOOK_SECRET')"
+
+
+if DEBUG is False:
+    SESSION_COOKIE_SECURE = True
+    SECURE_BROWSER_XSS_FILTER = True
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_SECONDS = 31536000
+    SECURE_REDIRECT_EXEMPT = []
+    SECURE_SSL_REDIRECT = True
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+    ALLOWED_HOSTS = ['www.domain.com']
+    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': '',
+            'USER': '',
+            'PASSWORD': '',
+            'HOST': '',
+            'PORT': ''
+        }
+    }
+
+    PAYPAL_CLIENT_ID = "env('PAYPAL_LIVE_CLIENT_ID')"
+    PAYPAL_SECRET_KEY = "env('PAYPAL_LIVE_SECRET_KEY')"
